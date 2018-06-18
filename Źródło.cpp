@@ -121,13 +121,31 @@ wybor:
 		fstream plik_klient;
 		string linia;
 		int k = 0;
+		
+		fstream Konta_p;
+		string i_p;
+		int k_p = 0;
+		Konta_p.open("resources/logowanie.txt", ios::in);
+		while (getline(Konta_p, i_p))
+		{
+			k_p++;
+		}
+		Konta_p.close();
+		k_p = k_p / 4;
+		k_p++;
+
 		plik_klient.open("resources/logowanie.txt", ios::out | ios::app);
 
 		//plik_klient << endl;
 		plik_klient << klient->login << endl;
 		plik_klient << klient->haslo << endl;
 		plik_klient << 4 << endl;
+		plik_klient << k << endl;
+		plik_klient << k_p << endl;
 		plik_klient.close();
+
+		
+
 
 		goto wybor;
 	}break;
@@ -180,12 +198,44 @@ wybor:
 		cout << endl << "Podaj numer telefonu: ";
 		cin >> klient->nr_tel;
 	premium:
-		cout << endl << "Uzytkownik premium? 1 - tak, 0 - nie";
+		cout << endl << "Uzytkownik premium? 1 - tak, 0 - nie" << endl;
 		cin >> klientp->Premium_aktywne;
 		if (!(klientp->Premium_aktywne == 1 || klientp->Premium_aktywne == 0)) {
 			cout << "Wybrales zla opcje!" << endl;
 			goto premium;
 		}
+		cout << "podaj login: " << endl;
+		cin >> klient->login;
+		cout << "podaj haslo: " << endl;
+		cin >> klient->haslo;
+
+
+		fstream plik_klient;
+		string linia;
+		int k = 0;
+
+		fstream Konta_p;
+		string i_p;
+		int k_p = 0;
+		Konta_p.open("resources/logowanie.txt", ios::in);
+		while (getline(Konta_p, i_p))
+		{
+			k_p++;
+		}
+		Konta_p.close();
+		k_p = k_p / 4;
+		k_p++;
+
+		plik_klient.open("resources/logowanie.txt", ios::out | ios::app);
+
+		//plik_klient << endl;
+		plik_klient << klient->login << endl;
+		plik_klient << klient->haslo << endl;
+		plik_klient << 4 << endl;
+		plik_klient << k << endl;
+		plik_klient << k_p << endl;
+		plik_klient.close();
+
 		goto wybor;
 	}break;
 	case 4:
@@ -297,6 +347,7 @@ wybor:
 	cout << "3. Faktury" << endl;
 	cout << "4. Wyloguj" << endl;
 	cout << "5. Koniec programu" << endl;
+	cout << "klient: " << klient->login << endl;
 	cin >> wybor;
 	switch (wybor) {
 		case 1: {
@@ -468,6 +519,7 @@ void User(int user) {
 
 	}
 }
+
 
 int main() {
 	cout << "Wersja systemu: Pre-alpha 0.9" << endl << endl;
