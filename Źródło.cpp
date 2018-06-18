@@ -112,25 +112,22 @@ wybor:
 			cout << "Wybrales zla opcje!" << endl;
 			goto premium;
 		}
+		cout << "podaj login: " << endl;
+		cin >> klient->login;
+		cout << "podaj haslo: " << endl;
+		cin >> klient->haslo;
+
 		
-		/*fstream logowanie;
+		fstream plik_klient;
 		string linia;
 		int k = 0;
-		logowanie.open("resources/logowanie.txt", ios::in);
+		plik_klient.open("resources/logowanie.txt", ios::out | ios::app);
 
-		while (getline(logowanie, linia))
-		{
-			k++;
-		}
-
-		logowanie.open("resources/logowanie.txt", ios::out | ios::app);
-
-		logowanie << klient->imie << endl;
-		logowanie << klient->nazwisko << endl;
-		logowanie << klient->nr_tel << endl;
-		klient->Id = k / 4;
-		logowanie << klient->Id << endl;
-		logowanie.close(); */
+		//plik_klient << endl;
+		plik_klient << klient->login << endl;
+		plik_klient << klient->haslo << endl;
+		plik_klient << 4 << endl;
+		plik_klient.close();
 
 		goto wybor;
 	}break;
@@ -343,7 +340,6 @@ wybor:
 			cout << endl << "Krotki opis problemu: ";
 			cin >> wizyta->problem;
 			cout << endl << "Zostales umowiony na wizyte!" << endl;
-			
 			fstream wizyty;
 			wizyty.open("resources/Wizyty.txt", ios::out | ios::app);
 			wizyty << wizyta->dzien << endl;

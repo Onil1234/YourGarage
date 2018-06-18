@@ -5,7 +5,10 @@ class Klient : public Osoba {
 	string Marka_pojazdu;
 	string Data_odbioru;
 	int Koszt_naprawy;
+	
 public:
+	string login;
+	string haslo;
 	void Umowienie_wizyty();
 	void Anulowanie_wizyty();
 	void Zmiana_terminu_wizyty();
