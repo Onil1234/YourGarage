@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 #include"Osoba.h"
 #include"Wizyty.h"
@@ -27,6 +28,44 @@ Klient *klient = new Klient;
 Klient_premium *klientp = new Klient_premium;
 Faktury *faktura = new Faktury;
 
+int login()
+{
+	string login, haslo, k;
+	fstream Konta;
+	bool i = false;
+	int ID;
+system_login:
+	cout << "podaj login: ";
+	cin >> login;
+	cout << "poaj haslo: ";
+	cin >> haslo;
+
+	Konta.open("resources/logowanie.txt", ios::in);
+
+	while (getline(Konta, k))
+	{
+		if (login == k)
+		{
+
+			getline(Konta, k);
+			if (k == haslo)
+			{
+				cout << "zostales zalogowany jako: " << login << endl;
+				getline(Konta, k);
+				ID = atoi(k.c_str());
+				return ID;
+
+			}
+			else
+			{
+				login = "0";
+			}
+		}
+	}
+	cout << "Wpisales nieprawodlowe dane!" << endl;
+	Konta.close();
+	goto system_login;
+}
 
 void opcje_admin() {
 	int wybor = 0;
@@ -35,6 +74,7 @@ wybor:
 	cout << " Wybierz opcje:" << endl;
 	cout << "1. Pokaz umowiona wizyte" << endl;
 	cout << "2. Dodaj Klienta" << endl;
+	cout << "4. Wyloguj" << endl;
 	cout << "5. Koniec programu" << endl;
 	cin >> wybor;
 	switch (wybor) {
@@ -45,6 +85,8 @@ wybor:
 			cout << "Premium: "; if (wizyta->premium == 1) cout << "tak"; else cout << "nie";
 			cout << endl << "Problem z samochodem marki " << wizyta->marka << ", model " << wizyta->model << endl;
 			cout << "Podany opis problemu: " << wizyta->problem << endl;
+
+
 			goto wybor;
 		}
 		else {
@@ -64,20 +106,43 @@ wybor:
 		cout << endl << "Podaj numer telefonu: ";
 		cin >> klient->nr_tel;
 		premium:
-		cout << endl << "Uzytkownik premium? 1 - tak, 0 - nie";
+		cout << endl << "Uzytkownik premium? 1 - tak, 0 - nie" << endl;
 		cin >> klientp->Premium_aktywne;
 		if (!(klientp->Premium_aktywne == 1 || klientp->Premium_aktywne == 0)) {
 			cout << "Wybrales zla opcje!" << endl;
 			goto premium;
 		}
+		
+		/*fstream logowanie;
+		string linia;
+		int k = 0;
+		logowanie.open("resources/logowanie.txt", ios::in);
 
+		while (getline(logowanie, linia))
+		{
+			k++;
+		}
+
+		logowanie.open("resources/logowanie.txt", ios::out | ios::app);
+
+		logowanie << klient->imie << endl;
+		logowanie << klient->nazwisko << endl;
+		logowanie << klient->nr_tel << endl;
+		klient->Id = k / 4;
+		logowanie << klient->Id << endl;
+		logowanie.close(); */
+
+		goto wybor;
+	}break;
+	case 4:
+	{
+		User(login());
 	}break;
 	case 5:
 	{
 		system("pause");
 	}break;
 	}
-
 }
 
 
@@ -88,6 +153,7 @@ wybor:
 	cout << " Wybierz opcje:" << endl;
 	cout << "1. Pokaz umowiona wizyte" << endl;
 	cout << "2. Dodaj Klienta" << endl;
+	cout << "4. Wyloguj" << endl;
 	cout << "5. Koniec programu" << endl;
 	cin >> wybor;
 	switch (wybor) {
@@ -125,6 +191,10 @@ wybor:
 		}
 		goto wybor;
 	}break;
+	case 4:
+	{
+		User(login());
+	}break;
 	case 5:
 	{
 		system("pause");
@@ -144,6 +214,7 @@ wybor:
 	cout << "1. Pokaz umowiona wizyte" << endl;
 	cout << "2. Dodaj Klienta" << endl;
 	cout << "3. Wystaw fakture" << endl;
+	cout << "4. Wyloguj" << endl;
 	cout << "5. Koniec programu" << endl;
 	cin >> wybor;
 	switch (wybor) {
@@ -206,7 +277,10 @@ wybor:
 		goto wybor;
 
 	}break;
-
+	case 4:
+	{
+		User(login());
+	}break;
 	case 5:
 	{
 		system("pause");
@@ -269,6 +343,18 @@ wybor:
 			cout << endl << "Krotki opis problemu: ";
 			cin >> wizyta->problem;
 			cout << endl << "Zostales umowiony na wizyte!" << endl;
+			
+			fstream wizyty;
+			wizyty.open("resources/Wizyty.txt", ios::out | ios::app);
+			wizyty << wizyta->dzien << endl;
+			wizyty << wizyta->miesiac << endl;
+			wizyty << wizyta->rok << endl;
+			wizyty << wizyta->premium << endl;
+			wizyty << wizyta->marka << endl;
+			wizyty << wizyta->model << endl;
+			wizyty << wizyta->problem << endl;
+			//wizyty.close();
+
 			goto wybor;
 		}break;
 		
@@ -295,7 +381,7 @@ wybor:
 		
 		case 4:
 		{
-			logowanie();
+			User(login());
 		}break;
 		case 5: 
 		{
@@ -342,6 +428,8 @@ int logowanie() {
 		goto logowanie;
 	}
 }
+
+
 
 void User(int user) {
 	switch (user) {
@@ -390,9 +478,10 @@ int main() {
 	cout << "Witamy w YourGarage!" << endl;
 	cout << "Zaloguj sie lub nacisnij 1. by wyjsc" << endl;
 		
-	user = logowanie();
+	//user = logowanie();
+	
+	user = login();
 	User(user);
-
 
 	system("pause");
 }
